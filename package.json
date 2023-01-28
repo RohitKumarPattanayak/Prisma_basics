@@ -5,8 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon",
-    "migrate": "npx prisma migrate dev --name"
+    "start": "npx prisma migrate dev --name migrations && npx nodemon",
+    "local": "npx nodemon",
+    "migrate": "npx prisma migrate dev --name migrations",
   },
   "keywords": [],
   "author": "",
