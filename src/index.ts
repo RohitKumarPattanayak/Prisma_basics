@@ -1,10 +1,12 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
+import bodyParser from "body-parser";
 
 const prisma = new PrismaClient();
 
 const app: Application = express();
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = 5000;
 
