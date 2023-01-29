@@ -14,18 +14,32 @@ app.get("/", async (req: Request, res: Response) => {
   });
 });
 
-app.post("/create", async (req: Request, res: Response) => {
+let router = express.Router();
+
+app.post("/createUser", async (req: Request, res: Response) => {
   let { data } = req.body;
-  await prisma.users.createMany({
+  console.log(JSON.stringify(data));
+  await prisma.users.create({
     data,
-    skipDuplicates: true,
+    include: {
+      profile: true,
+    },
   });
   return res.status(200).send({
     message: "successfully created users",
   });
 });
 app.get("/getUsers", async (req: Request, res: Response) => {
-  const data = await prisma.users.findMany({});
+  const data = await prisma.users.findMany({
+    select: {
+      name: true,
+      profile: {
+        select: {
+          bio: true,
+        },
+      },
+    },
+  });
   return res.status(200).send({
     message: data,
   });
