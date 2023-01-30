@@ -1,13 +1,14 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 const prisma = new PrismaClient();
 
 const app: Application = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cors());
 app.get("/", async (req: Request, res: Response) => {
   return res.status(200).send({
     message: `server running at port: ${process.env.PORT} `,
@@ -22,7 +23,7 @@ app.post("/createUser", async (req: Request, res: Response) => {
     const result = await prisma.users.create({
       data: data,
     });
-    return res.status(200).send({
+    return res.status(201).send({
       message: `successfully created users ${JSON.stringify(result)}`,
     });
   } catch (error) {
