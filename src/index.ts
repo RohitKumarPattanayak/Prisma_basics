@@ -31,11 +31,11 @@ app.post("/createUser", async (req: Request, res: Response) => {
   }
 });
 
-app.put("/putUserDetails/:id/:score", async (req: Request, res: Response) => {
-  const { id, score } = req.params;
+app.put("/putUserDetails/:name/:score", async (req: Request, res: Response) => {
+  const { name, score } = req.params;
   try {
     await prisma.users.update({
-      where: { id: Number(id) },
+      where: { name: name },
       data: { total_score: Number(score) },
     });
     return res.status(200).json({
@@ -50,11 +50,15 @@ app.get("/getUserDetails", async (req: Request, res: Response) => {
   try {
     const result = await prisma.users.findMany({
       select: {
-        id: true,
         name: true,
         total_score: true,
         updatedAt: true,
       },
+      orderBy: [
+        {
+          total_score: "desc",
+        },
+      ],
     });
     return res.status(200).json({
       message: `successfully fetched user details`,
