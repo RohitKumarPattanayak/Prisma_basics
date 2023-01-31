@@ -68,21 +68,6 @@ app.get("/getUserDetails", async (req: Request, res: Response) => {
     res.send(error);
   }
 });
-// app.get("/getUsers", async (req: Request, res: Response) => {
-//   const data = await prisma.users.findMany({
-//     select: {
-//       name: true,
-//       profile: {
-//         select: {
-//           bio: true,
-//         },
-//       },
-//     },
-//   });
-//   return res.status(200).send({
-//     message: data,
-//   });
-// });
 
 try {
   app.listen(process.env.PORT, (): void => {
