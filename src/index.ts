@@ -33,11 +33,19 @@ app.post("/createUser", async (req: Request, res: Response) => {
 
 app.put("/putUserDetails/:name/:score", async (req: Request, res: Response) => {
   const { name, score } = req.params;
+
   try {
-    await prisma.users.update({
+    const user_exists = await prisma.users.findUnique({
       where: { name: name },
-      data: { total_score: Number(score) },
     });
+    if (user_exists) {
+      if (Number(user_exists.total_score) < Number(score)) {
+        await prisma.users.update({
+          where: { name: name },
+          data: { total_score: Number(score) },
+        });
+      }
+    }
     return res.status(200).json({
       message: `successfully updated user details`,
     });
